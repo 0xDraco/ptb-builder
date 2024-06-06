@@ -543,10 +543,10 @@ function MoveCallBuild({client, transaction, index, update}: {
     }
 
     const onModuleNameChange = (value: string) => {
-        const module = modules[value];
-        if (!module) return
+        const mod = modules[value];
+        if (!mod) return
 
-        const functions = Object.entries(module.exposedFunctions)
+        const functions = Object.entries(mod.exposedFunctions)
             .filter(([_, definition]) => definition.visibility === "Public")
             .map(([name, definition]) => ({name, ...definition}))
 
@@ -620,7 +620,7 @@ function MoveCallBuild({client, transaction, index, update}: {
                             <SelectContent>
                                 {
                                     Object.keys(modules ?? {})
-                                        .map(module => <SelectItem value={module}>{module}</SelectItem>)
+                                        .map((module, i) => <SelectItem key={i} value={module}>{module}</SelectItem>)
                                 }
                             </SelectContent>
                         </Select>
@@ -636,7 +636,8 @@ function MoveCallBuild({client, transaction, index, update}: {
                             <SelectContent>
                                 {
                                     functions
-                                        .map(func => <SelectItem value={func.name}>{func.name}</SelectItem>)
+                                        .map((func, i) => <SelectItem key={i}
+                                                                      value={func.name}>{func.name}</SelectItem>)
                                 }
                             </SelectContent>
                         </Select>
@@ -689,7 +690,7 @@ function MoveCallBuild({client, transaction, index, update}: {
             <div className="text-sm mb-2">Returns:</div>
             {
                 results.map((result, i) => (
-                        <div className="text-sm mb-2 flex gap-3 justify-between">
+                        <div key={i} className="text-sm mb-2 flex gap-3 justify-between">
                             <div>{i}</div>
                             <div className="text-muted-foreground text-sm">{makeFullTypeName(result)}</div>
                         </div>
